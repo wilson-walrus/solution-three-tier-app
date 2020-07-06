@@ -1,0 +1,45 @@
+---
+- name: Deploy Application Tier
+  hosts: app_servers
+  gather_facts: false
+  become: true
+  vars:
+    postgres_rhel7_repo: "https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+    app_server_packages:
+      - tomcat
+      - python-psycopg2
+    app_server_port: 8080    
+    app_server_service: tomcat
+
+  tags:
+    - app_servers
+
+  tasks:
+
+    - name: Install Tomcat package(s)
+      package:
+        name: "{{ app_server_packages }}"
+        state: present
+
+    - name: Enable Tomcat at boot
+      service:
+        name: tomcat
+        enabled: yes
+
+    - name: Create Tomcat content directory
+      file:
+        path: /usr/share/tomcat/webapps/ROOT
+        state: directory
+
+    - name: Copy static index.html to tomcat webapps/ansible/index.html
+      template:
+        src: index.html.j2
+        dest: /usr/share/tomcat/webapps/ROOT/index.html
+        mode: 0644
+
+    - name: Start Tomcat
+      service:
+        name: "{{ app_server_service }}"
+        state: started
+
+...

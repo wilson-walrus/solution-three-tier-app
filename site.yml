@@ -1,0 +1,5 @@
+
+- import_playbook: database_tier.yml
+- import_playbook: app_tier.yml
+- import_playbook: frontend_tier.yml
+- import_playbook: smoketest.yml
