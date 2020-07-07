@@ -13,6 +13,12 @@
         name: "{{ app_server_packages }}"
         state: present
 
+    - name: Copy jar file into tomcat bin
+      copy:
+        src: /usr/share/java/tomcat/extras/tomcat-juli.jar
+        dest: /usr/share/tomcat/bin/tomcat-juli.jar
+        remote_src: yes
+
     - name: Enable Tomcat at boot
       service:
         name: tomcat
@@ -25,7 +31,7 @@
 
     - name: Copy static index.html to tomcat webapps/ansible/index.html
       template:
-        src: templates/index.html.j2
+        src: ../templates/index.html.j2
         dest: /usr/share/tomcat/webapps/ROOT/index.html
         mode: 0644
 
