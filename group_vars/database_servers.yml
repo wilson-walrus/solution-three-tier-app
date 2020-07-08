@@ -22,5 +22,6 @@ postgres_databases:
     owner: flask
   - name: books_store
     owner: flask
+postgresql_bin_path: /usr/pgsql-10/bin
 
 ...
