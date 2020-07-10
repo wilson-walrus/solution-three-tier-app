@@ -1,8 +1,10 @@
 ---
 - name: Deploy, configure, and populate Postgres 10
-  hosts: database_servers
+  hosts: appdbs
   become: true
   gather_facts: false
+  vars_files:
+    - ../group_vars/appdbs.yml
   tags:
     - database_servers
   

@@ -1,6 +1,6 @@
 ---
 - name: End to end smoke tests
-  hosts: app_servers:database_servers
+  hosts: apps:appdbs
   gather_facts: true
   become: true
   tags:
@@ -10,24 +10,26 @@
 
     - debug:
         msg: 
-          - "IP is {{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
-          - "First App server  {{ groups.app_servers[0] }}" 
+          # - "IP is {{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
+          - "IP is {{ hostvars['appdb1']['inventory_hostname'] }}"
+          - "First App server  {{ groups.apps[0] }}" 
         verbosity: 2        
 
     - name: Smoketest Postgres database
       postgresql_ping:
         db: flask_db
-        login_host: "{{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
+        # login_host: "{{ hostvars['appdb1']['ansible_default_ipv4']['address'] }}"
+        login_host: "{{ groups.appdbs[0].ansible_host }}"
         login_user: flask
         login_password: redhat
         ssl_mode: disable
-      delegate_to: "{{ groups.app_servers[0] }}"
+      delegate_to: "{{ groups.apps[0] }}"
       run_once: true
       tags:
         - smoketest
 
 - name: End to end smoke tests
-  hosts: app_servers
+  hosts: apps
   become: false
   gather_facts: false
   tags:

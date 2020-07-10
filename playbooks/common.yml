@@ -1,0 +1,16 @@
+---
+- name: Deploy Common repos
+  hosts: apps:frontends:appdbs
+  gather_facts: false
+  become: true
+  tags:
+    - common
+
+  tasks:
+
+    - name: Copy repo file
+      copy:
+        src: ../files/open_three-tier-app.repo
+        dest: /etc/yum.repos.d/open_three-tier-app.repo
+
+...

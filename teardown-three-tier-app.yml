@@ -1,6 +1,6 @@
 ---
 - name: Teardown Postgres 10
-  hosts: database_servers
+  hosts: appdbs
   become: true
   gather_facts: false
   vars:
@@ -39,7 +39,7 @@
 
 
 - name: Teardown Application Tier
-  hosts: app_servers
+  hosts: apps
   gather_facts: false
   become: true
   vars:
@@ -65,7 +65,7 @@
 
 
 - name: Teardown haproxy load balancer
-  hosts: load_balancers
+  hosts: frontends
   gather_facts: false 
   become: true
 
@@ -82,10 +82,5 @@
       package:
         name: "{{ load_balancer_packages }}"
         state: absent
-
-#    - name: configure haproxy
-#      file:
-#        path: /etc/haproxy/haproxy.cfg
-#        state: absent
 
 ...
