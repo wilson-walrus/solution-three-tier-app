@@ -1,30 +1,14 @@
 ---
 
-- name: Generate in-memory inventory
-  hosts: localhost
-  connection: local
-  become: false
-  gather_facts: false
+- import_playbook: in-memory-inventory.yml
+  tags:
+    - inventory
+    - must
 
-  tasks:
-
-    - name: Fetch Instance Info
-      os_server_info:
-        cloud: openstack
-        #region_name: RegionOne
-      register: r_os_servers
-
-    - name: Add host
-      add_host:
-        name: "{{ item.public_v4 }}"
-        group:
-          - "{{ item.metadata.group }}"
-          - "{{ item.metadata.deployment_name }}"
-      loop: "{{ r_os_servers.openstack_servers }}"
-
-
-- import_playbook: playbooks/common.yml
-- import_playbook: playbooks/frontend_tier.yml
-- import_playbook: playbooks/database_tier.yml
-- import_playbook: playbooks/app_tier.yml
+- import_playbook: common.yml
+  tags:
+    - common
+- import_playbook: frontend_tier.yml
+- import_playbook: database_tier.yml
+- import_playbook: app_tier.yml
 # - import_playbook: playbooks/smoketest.yml

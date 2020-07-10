@@ -3,8 +3,6 @@
   hosts: apps
   gather_facts: false
   become: true
-  vars_files:
-    - ../group_vars/apps.yml
   tags:
     - app_servers
 
@@ -33,7 +31,7 @@
 
     - name: Copy static index.html to tomcat webapps/ansible/index.html
       template:
-        src: ../templates/index.html.j2
+        src: templates/index.html.j2
         dest: /usr/share/tomcat/webapps/ROOT/index.html
         mode: 0644
 
