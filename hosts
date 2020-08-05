@@ -1,12 +1,15 @@
+[jumpbox]
+bastion ansible_host=control.4e1e.example.opentlc.com
+
 [load_balancers]
-frontend1 ansible_host=frontend1."{{ GUID }}".internal
+frontend1 ansible_host=frontend1.4e1e.internal
 
 [app_servers]
-app1 ansible_host=app1."{{ GUID }}".internal
-app2 ansible_host=app2."{{ GUID }}".internal
+app1 ansible_host=app1.4e1e.internal
+app2 ansible_host=app2.4e1e.internal
 
 [database_servers]
-appdb1 ansible_host=appdb1."{{ GUID }}".internal
+appdb1 ansible_host=appdb1.4e1e.internal
 
 [internal:children]
 load_balancers
