@@ -2,14 +2,14 @@
 bastion ansible_host=control.4e1e.example.opentlc.com
 
 [frontends]
-frontend1 ansible_host=frontend1.4e1e.example.opentlc.com
+frontend1 ansible_host=frontend1.4e1e.internal
 
 [apps]
-app1 ansible_host=app1.4e1e.example.opentlc.com
-app2 ansible_host=app2.4e1e.example.opentlc.com
+app1 ansible_host=app1.4e1e.internal
+app2 ansible_host=app2.4e1e.internal
 
 [appdbs]
-appdb1 ansible_host=appdb1.4e1e.example.opentlc.com
+appdb1 ansible_host=appdb1.4e1e.internal 
 
 [internal:children]
 frontends
