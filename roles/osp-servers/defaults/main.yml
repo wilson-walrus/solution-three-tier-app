@@ -1,0 +1,28 @@
+---
+# defaults file for osp.servers
+# 
+# Example dictionary for role will defaults listed beside
+#
+# vms_data:
+#   - name: 
+#     image:                       default ('rhel-8.1') 
+#     key_name:                    default('ansible_ssh')
+#     flavor:                      default('m2.small')
+#     security_groups:             default(omit)
+#     net_name:                    default('int_network')
+#     meta:                        default('group=testservers,deployment_name=Dev')
+
+
+vms_data:
+  - name: app1
+    security_groups: apps
+    meta: 'group=apps,deployment_name=Dev'
+  - name: app2
+    security_groups: apps
+    meta: 'group=apps,deployment_name=Dev'
+  - name: database
+    security_groups: db
+    meta: 'group=appdbs,deployment_name=Dev'
+  - name: frontend
+    security_groups: frontend
+    meta: 'group=frontends,deployment_name=Dev'

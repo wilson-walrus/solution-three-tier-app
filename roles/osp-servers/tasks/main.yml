@@ -1,0 +1,38 @@
+---
+
+- name: Create instance
+  os_server:
+    cloud: openstack
+    name: "{{ __vms_data.name }}"
+    image: "{{ __vms_data.image | default ('rhel-guest') }}"
+    key_name: "{{ __vms_data.key_name | default('ansible_ssh') }}"
+    flavor: "{{ __vms_data.flavor | default('m2.small') }}"
+    security_groups: "{{ __vms_data.security_groups | default(omit) }}"
+    delete_fip: yes
+    wait: no
+    nics:
+      - net-name: "{{ __vms_data.net_name | default('int_network') }}"
+    meta: "{{ __vms_data.meta | default('group=testservers,deployment_name=Dev') }}"
+    auto_floating_ip: yes
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+  loop: "{{ vms_data }}"
+  loop_control:
+    loop_var: __vms_data
+ 
+- name: Add floating IP to instance
+  os_floating_ip:
+    cloud: openstack
+    state: present
+    reuse: yes
+    server: "{{ __vms_data.name }}"
+    network: "{{ __vms_data.ext_net_name | default('ext_network') }}"
+    wait: true
+    timeout: 200
+  loop: "{{ vms_data }}"
+  loop_control:
+    loop_var: __vms_data
+  retries: 3
+  delay: 10

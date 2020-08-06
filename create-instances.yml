@@ -1,0 +1,8 @@
+---
+- name: Provision servers for 3 tier app
+  hosts: localhost
+  connection: local
+  become: false
+  gather_facts: true
+  roles:
+    - osp-servers 
